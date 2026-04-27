@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mehran Gift Items And Decor Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for Modern Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="background-3d"></div>
+    <div id="cute-floating-container" class="cute-floating-container"></div>
+    <div id="notification-container" class="notification-container"></div>
+
+    <header class="glass-header">
+        <div class="logo">
+            <h1>Mehran Gift</h1>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-btn glow-on-hover active" data-target="home-view">Home</button>
+            <button class="nav-btn glow-on-hover" data-target="products-view">Explore Products</button>
+            <button class="nav-btn glow-on-hover" data-target="about-view">About Us</button>
+        </nav>
+        <div class="controls">
+            <select id="language-selector" class="futuristic-select"></select>
+            <button id="cart-btn" class="glow-on-hover">
+                🛒 Cart (<span id="cart-count">0</span>)
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <div id="home-view" class="page-view">
+            <section class="hero-section glass-panel">
+                <h2 class="shadow-text holo-text">Welcome to Mehran Gifts</h2>
+                <p>Welcome to our futuristic 3D platform. Click on "Explore Products" above to dive into our exclusive
+                    collection.</p>
+            </section>
+
+            <!-- Website Reviews Section -->
+            <section class="reviews-section">
+                <h2 class="section-title text-center holo-text">Website Reviews</h2>
+                <div id="reviews-grid" class="reviews-grid">
+                    <!-- Reviews will be generated here by JS -->
+                </div>
+
+                <div class="add-review-panel glass-panel">
+                    <h3>Review Our Website</h3>
+                    <form id="review-form">
+                        <div class="input-group">
+                            <label>Your Name</label>
+                            <input type="text" id="review-name" required placeholder="Enter your full name">
+                        </div>
+                        <div class="input-group">
+                            <label>Rating</label>
+                            <select id="review-rating" class="futuristic-select dark-select" required>
+                                <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                                <option value="4">⭐⭐⭐⭐ (Very Good)</option>
+                                <option value="3">⭐⭐⭐ (Good)</option>
+                                <option value="2">⭐⭐ (Average)</option>
+                                <option value="1">⭐ (Poor)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Your Review</label>
+                            <textarea id="review-text" required
+                                placeholder="Share your experience with us..."></textarea>
+                        </div>
+                        <button type="submit" class="glow-on-hover checkout-submit">Submit Review</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <!-- Products Section -->
+        <div id="products-view" class="page-view hidden">
+            <h2 class="section-title text-center holo-text">Explore Our Products</h2>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar glass-panel">
+                <input type="text" id="product-search" placeholder="Search products..." class="search-input">
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="Gifts">Gifts</button>
+                    <button class="filter-btn" data-category="Decor">Decor</button>
+                </div>
+            </div>
+
+            <section id="products-grid" class="products-grid"></section>
+        </div>
+
+        <!-- About Section -->
+        <div id="about-view" class="page-view hidden">
+            <section id="about-us" class="about-section glass-panel">
+                <h2>About This Website</h2>
+                <div class="about-content">
+                    <p>This state-of-the-art 3D e-commerce platform was passionately built by the brilliant duo
+                        <strong>Zainab Sultan</strong> and <strong>Sultan Hussain</strong>.</p>
+                    <p>Through immense hard work, dedication, and unparalleled coding expertise, they have crafted a
+                        shopping experience unlike any other. Every interaction, glassmorphic element, and 3D structure
+                        reflects their mastery of web technologies, creating a true masterpiece of modern design!</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Google Translate (Hidden UI for native text conversion) -->
+    <div id="google_translate_element" style="display:none;"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal hidden">
+        <div class="cart-content glass-panel">
+            <button id="close-cart" class="close-btn">✖</button>
+            <h2>Your Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">Total: <span id="cart-total-price">0</span></div>
+            <button id="checkout-btn" class="glow-on-hover checkout-submit">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="checkout-modal hidden">
+        <div class="checkout-content glass-panel">
+            <button id="close-checkout" class="close-btn">✖</button>
+            <h2>Checkout Details</h2>
+            <form id="checkout-form">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="text" required placeholder="Active mobile number">
+                </div>
+                <div class="input-group">
+                    <label>Shipping Address</label>
+                    <textarea required placeholder="Detailed address info"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Payment Method (Pakistan)</label>
+                    <select required id="payment-method" class="futuristic-select dark-select">
+                        <option value="easypaisa">EasyPaisa</option>
+                        <option value="jazzcash">JazzCash</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Delivery Area</label>
+                    <select required id="delivery-area" class="futuristic-select dark-select">
+                        <option value="250">Kareeb (Near) - Rs 250</option>
+                        <option value="350">Dur (Far) - Rs 350</option>
+                    </select>
+                </div>
+
+                <div class="checkout-summary">
+                    <div class="summary-line">
+                        <span>Subtotal:</span>
+                        <span id="checkout-subtotal">Rs 0</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Delivery Charges:</span>
+                        <span id="delivery-cost">Rs 250</span>
+                    </div>
+                    <div class="summary-line final-total">
+                        <span>Total Amount:</span>
+                        <span id="checkout-total">Rs 250</span>
+                    </div>
+                </div>
+                <button type="submit" class="glow-on-hover checkout-submit">Confirm Order & Pay</button>
+            </form>
+            <div id="order-success" class="order-success hidden">
+                <div class="success-icon">✅</div>
+                <h2>Order Successful!</h2>
+                <p>Thank you for shopping with Mehran Gifts. We will contact you soon on your mobile number for payment
+                    confirmation.</p>
+                <button id="close-success" class="glow-on-hover">Back to Shop</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image View Modal -->
+    <div id="image-modal" class="image-modal hidden">
+        <div class="image-modal-content glass-panel">
+            <button id="close-image-modal" class="close-btn">✖</button>
+            <img id="modal-full-image" src="" alt="Full Product Image">
+            <h3 id="modal-product-name"></h3>
+        </div>
+    </div>
+
+    <!-- Product Review Modal -->
+    <div id="product-review-modal" class="cart-modal hidden">
+        <div class="cart-content glass-panel">
+            <button id="close-pr-modal" class="close-btn">✖</button>
+            <h2>Write a Review</h2>
+            <p style="margin-bottom:1rem;color:#38bdf8;" id="pr-modal-product-name"></p>
+            <form id="pr-modal-form">
+                <input type="hidden" id="pr-modal-product-id">
+                <div class="input-group">
+                    <label>Your Name</label>
+                    <input type="text" id="pr-modal-name" required placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label>Rating</label>
+                    <select id="pr-modal-rating" class="futuristic-select dark-select" required>
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="1">⭐</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Review</label>
+                    <textarea id="pr-modal-text" required placeholder="Write your thoughts..."></textarea>
+                </div>
+                <button type="submit" class="glow-on-hover checkout-submit">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chatbot AI Agent UI -->
+    <div id="ai-chat-container" class="ai-chat-container">
+        <div id="ai-chat-window" class="ai-chat-window glass-panel hidden">
+            <div class="chat-header">
+                <span class="ai-status-orb"></span>
+                <span class="holo-text">Mehran AI Assistant</span>
+                <button id="close-chat-window" class="close-btn">✖</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="ai-message">Hello! I am your futuristic AI shopping assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-user-input" placeholder="Type your message..." autocomplete="off">
+                <button id="send-chat-btn" class="glow-on-hover">Send</button>
+            </div>
+        </div>
+        <button id="ai-chat-btn" class="ai-chat-trigger glow-on-hover">
+            <span class="ai-icon">🤖</span>
+            <span class="ai-notification-badge">1</span>
+            <span class="btn-text">Ask AI</span>
+        </button>
+    </div>
+
+    <!-- Loading External Scripts -->
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
