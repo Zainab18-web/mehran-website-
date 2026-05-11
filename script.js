@@ -63,20 +63,34 @@ const pageViews = document.querySelectorAll('.page-view');
 // SPA Navigation Logic
 navBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-        const clickedBtn = e.currentTarget; // Fixes clicking on internal text/font elements from GT
+        const clickedBtn = e.currentTarget; 
         
-        // Remove active class from all buttons
         navBtns.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
         clickedBtn.classList.add('active');
         
-        // Hide all views
         pageViews.forEach(view => view.classList.add('hidden'));
         
-        // Show target view
         const targetId = clickedBtn.getAttribute('data-target');
-        document.getElementById(targetId).classList.remove('hidden');
+        const targetView = document.getElementById(targetId);
+        targetView.classList.remove('hidden');
+        
+        // Auto-scroll to top on page change
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+});
+
+// Sticky Header Logic
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('.glass-header');
+    if (window.scrollY > 50) {
+        header.style.padding = '0.8rem 3rem';
+        header.style.background = 'rgba(15, 23, 42, 0.9)';
+        header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+    } else {
+        header.style.padding = '1rem 3rem';
+        header.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))';
+        header.style.boxShadow = 'none';
+    }
 });
 
 // Logic to trigger real-time entire website Text & Currency translation
@@ -219,7 +233,13 @@ if (searchInput) {
 filterBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         filterBtns.forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
+        const target = e.currentTarget;
+        target.classList.add('active');
+        
+        // Visual feedback
+        target.style.transform = 'scale(0.95)';
+        setTimeout(() => target.style.transform = 'scale(1)', 100);
+        
         filterProducts();
     });
 });
@@ -423,16 +443,10 @@ function getCartSubtotal() {
 
 function updateCheckoutSummary() {
     const subtotal = getCartSubtotal();
-    const deliveryCharge = parseInt(deliveryAreaSelect.value);
-    const total = subtotal + deliveryCharge;
+    const total = subtotal; // Delivery paid separately
 
-    checkoutSubtotalEl.innerText = formatPrice(subtotal);
-    deliveryCostEl.innerText = formatPrice(deliveryCharge);
-    checkoutTotalEl.innerText = formatPrice(total);
-}
-
-if (deliveryAreaSelect) {
-    deliveryAreaSelect.addEventListener('change', updateCheckoutSummary);
+    if (checkoutSubtotalEl) checkoutSubtotalEl.innerText = formatPrice(subtotal);
+    if (checkoutTotalEl) checkoutTotalEl.innerText = formatPrice(total);
 }
 
 // Render cart items
@@ -789,7 +803,7 @@ function generateAIResponse(input) {
 
     // 8. DELIVERY CHARGES
     if (['delivery', 'deliver', 'shipping', 'charges', 'pahunchane', 'fees', 'bhijwana', 'parcel'].some(k => query.includes(k))) {
-        return "Hamare delivery charges bohat munasib hain! Kareeb ke areas ke liye sirf Rs 250 aur dur ke areas ke liye Rs 350 charges hain. Aap checkout ke waqt apna area select kar sakte hain.";
+        return "Delivery Bykea, TCS, ya Leopards ke zariye hoti hai. Delivery charges aapko parcel receive karte waqt direct rider ko pay karne honge (Cash on Delivery for delivery fee).";
     }
 
     // 9. DYNAMIC UNAVAILABILITY
@@ -834,7 +848,57 @@ renderProducts();
 renderWebsiteReviews();
 updateCartCount();
 
-// Cute Floating Animations Logic (Subtle 3D foreground)
+// --- ADVANCED 3D TILT LOGIC ---
+function init3DTilt() {
+    document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 15;
+                const rotateY = (centerX - x) / 15;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            } else {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            }
+        });
+    });
+}
+
+// --- CUSTOM CURSOR & SCROLL PROGRESS ---
+function initAdvancedUI() {
+    const cursor = document.getElementById('custom-cursor');
+    const scrollBar = document.getElementById('scroll-progress');
+    
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+    
+    document.addEventListener('mousedown', () => cursor.classList.add('click'));
+    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+    
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        scrollBar.style.width = scrolled + "%";
+    });
+}
+
+// Initialize everything
+window.addEventListener('DOMContentLoaded', () => {
+    init3DTilt();
+    initAdvancedUI();
+});
+
+// Cute Floating Animations Logic
 function createFloatingItem() {
     const container = document.getElementById('cute-floating-container');
     if (!container) return;
@@ -842,13 +906,11 @@ function createFloatingItem() {
     const item = document.createElement('div');
     item.className = 'floating-item';
     
-    // Add cute real items like Balloons, Bows, Teddies, and real Bubbles.
     const aesthetics = ['🎈', '🎀', '🫧', '🧸', '💖'];
     item.innerText = aesthetics[Math.floor(Math.random() * aesthetics.length)];
 
-    // Randomize position, size, and animation duration
-    const leftPos = Math.random() * 100; // 0 to 100vw
-    const animDuration = 15 + Math.random() * 15; // 15s to 30s
+    const leftPos = Math.random() * 100;
+    const animDuration = 15 + Math.random() * 15;
     const sizeOffset = Math.random(); 
 
     item.style.left = `${leftPos}%`;
@@ -857,15 +919,11 @@ function createFloatingItem() {
 
     container.appendChild(item);
 
-    // Remove item after animation completes to keep DOM clean
     setTimeout(() => {
         item.remove();
     }, animDuration * 1000);
 }
 
-// Generate an item periodically but sparsely (every 4 seconds)
 setInterval(createFloatingItem, 4000);
-
-// Just create a couple at the start
 createFloatingItem();
 setTimeout(createFloatingItem, 1500);

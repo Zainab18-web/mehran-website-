@@ -115,7 +115,7 @@ const customPrices = {
     "sparkle_candles.jpeg": 230,
     "wavy_birthday_candles.jpeg": 250,
     "dispossible_birthday_plate.jpeg": 230,
-    "unicorn_birthday_set.jpeg": 1700,
+    "unicorn_birthday_set.jpeg": 1750,
     "birthday_cap.jpeg": 120,
     "birthday_candle.jpeg": 130,
     "silver_bride_to_be_hairband.jpeg": 300,
@@ -131,7 +131,44 @@ const customPrices = {
     "happy_bithday_banner_silver.jpeg": 350,
     "it's_boy_foil_balloon.jpeg": 400,
     "it's_a_boy_foil_balloon_set.jpeg": 350,
-    "acrylic_cake_topper_in_english.jpeg": 250
+    "acrylic_cake_topper_in_english.jpeg": 250,
+    "Foil_Fringe_Curtain.jpeg": 200,
+    "H_B_D_balloon_set.jpeg": 350,
+    "acrylic_annyiversary_cake_topper.jpeg": 230,
+    "acrylic_birthday_cake_topper.jpeg": 350,
+    "acrylic_new_year_cake_topper.jpeg": 220,
+    "acrylic_cake_topper.jpeg": 300,
+    "acrylic_date_fix_topper.jpeg": 230,
+    "gold_silver_birthday_boy_and_birthday_girl_topper.jpeg": 350,
+    "golden_birthday_candle.jpeg": 200,
+    "golden_crown.jpeg": 400,
+    "happy_birthday_balloon_set.jpeg": 350,
+    "golden_bride_to_be_hairband.jpeg": 300,
+    "happy_birthday_balloons.jpeg": 150,
+    "it's_a_girl_balloon_set.jpeg": 450,
+    "colorful_balloons_with_transparent_balloons.jpeg": 250,
+    "colorful_candles.jpeg": 250,
+    "date_fix_foil_balloon.jpeg": 400,
+    "anniversary_v.jpeg": 230,
+    "balloon_packets.jpeg": 280,
+    "balloons_packet.jpeg": 700,
+    "barbie_birthday_set.jpeg": 1750,
+    "big_balloon.jpeg": 300,
+    "fancy_birthday_set.jpeg": 1750,
+    "birthday_set_premium.jpeg": 1750,
+    "birthday_girl_or_boy_balloon_set.jpeg": 250,
+    "birthday_banners.jpeg": 210,
+    "birthday_eye_mask.jpeg": 110,
+    "blue_birthday_balloon_set.jpeg": 350,
+    "birthday_candles.jpeg": 250,
+    "bride_to_be_balloon_set.jpeg": 850,
+    "bride_to_be_banner.jpeg": 250,
+    "bride_to_be_foil_balloons.jpeg": 400,
+    "color_smoke.jpeg": 210,
+    "engagement_foil_balloons.jpeg": 350,
+    "doted_balloons.jpeg": 200,
+    "foil_balloons.jpeg": 350,
+    "bear_birthday_set.jpeg": 1750
 };
 
 let newProducts = [];
@@ -140,7 +177,16 @@ let idCounter = 1;
 realImageFiles.forEach((imgName, i) => {
     let prodName = formatName(imgName);
     let imgSrc = `images/${imgName}`;
-    let category = i % 2 === 0 ? "Gifts" : "Decor";
+    
+    // Professional Categorization Logic
+    let category = "Decor & Others";
+    const lowerName = imgName.toLowerCase();
+    
+    if (lowerName.includes("balloon")) category = "Balloons";
+    else if (lowerName.includes("candle")) category = "Candles";
+    else if (lowerName.includes("set")) category = "Birthday Sets";
+    else if (lowerName.includes("topper")) category = "Cake Toppers";
+    else if (lowerName.includes("mug") || lowerName.includes("teddy") || lowerName.includes("gift")) category = "Gifts";
 
     const createProd = (name, price) => {
         newProducts.push({

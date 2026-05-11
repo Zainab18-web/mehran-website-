@@ -10,6 +10,8 @@
 </head>
 <body>
 
+    <div class="scroll-progress" id="scroll-progress"></div>
+    <div class="custom-cursor" id="custom-cursor"></div>
     <div class="background-3d"></div>
     <div id="cute-floating-container" class="cute-floating-container"></div>
     <div id="notification-container" class="notification-container"></div>
@@ -22,6 +24,7 @@
             <button class="nav-btn glow-on-hover active" data-target="home-view">Home</button>
             <button class="nav-btn glow-on-hover" data-target="products-view">Explore Products</button>
             <button class="nav-btn glow-on-hover" data-target="about-view">About Us</button>
+            <button class="nav-btn glow-on-hover" data-target="contact-view">Contact Us</button>
         </nav>
         <div class="controls">
             <select id="language-selector" class="futuristic-select"></select>
@@ -36,7 +39,7 @@
         <div id="home-view" class="page-view">
             <section class="hero-section glass-panel">
                 <h2 class="shadow-text holo-text">Welcome to Mehran Gifts</h2>
-                <p>Welcome to our futuristic 3D platform. Click on "Explore Products" above to dive into our exclusive collection.</p>
+                <p>Welcome to our online store. Click on "Explore Products" above to dive into our exclusive collection of gifts and home decor.</p>
             </section>
 
             <!-- Website Reviews Section -->
@@ -82,8 +85,12 @@
                 <input type="text" id="product-search" placeholder="Search products..." class="search-input">
                 <div class="category-filters">
                     <button class="filter-btn active" data-category="all">All</button>
-                    <button class="filter-btn" data-category="Gifts">Gifts</button>
-                    <button class="filter-btn" data-category="Decor">Decor</button>
+                    <button class="filter-btn" data-category="Balloons">🎈 Balloons</button>
+                    <button class="filter-btn" data-category="Birthday Sets">🎁 Sets</button>
+                    <button class="filter-btn" data-category="Candles">🕯️ Candles</button>
+                    <button class="filter-btn" data-category="Cake Toppers">🎂 Toppers</button>
+                    <button class="filter-btn" data-category="Gifts">💝 Gifts</button>
+                    <button class="filter-btn" data-category="Decor & Others">✨ Decor</button>
                 </div>
             </div>
 
@@ -93,10 +100,28 @@
         <!-- About Section -->
         <div id="about-view" class="page-view hidden">
             <section id="about-us" class="about-section glass-panel">
-                <h2>About This Website</h2>
+                <h2>About Us</h2>
                 <div class="about-content">
-                    <p>This state-of-the-art 3D e-commerce platform was passionately built by the brilliant duo <strong>Zainab Sultan</strong> and <strong>Sultan Hussain</strong>.</p>
-                    <p>Through immense hard work, dedication, and unparalleled coding expertise, they have crafted a shopping experience unlike any other. Every interaction, glassmorphic element, and 3D structure reflects their mastery of web technologies, creating a true masterpiece of modern design!</p>
+                    <p>Mehran Gifts was founded by <strong>Zainab Sultan</strong> and <strong>Sultan Hussain</strong> with a simple goal: to make gifting and home decorating easier and more beautiful.</p>
+                    <p>We believe in providing high-quality items that bring joy to your special moments. Whether you are looking for a unique present for a loved one or stylish decor for your home, our carefully curated collection has something for everyone. Thank you for choosing Mehran Gifts!</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact-view" class="page-view hidden">
+            <section class="contact-section glass-panel" style="margin: 4rem 5%; padding: 3rem; border-radius: 20px;">
+                <h2 class="section-title text-center holo-text">Contact Us</h2>
+                <div class="about-content" style="text-align: center; margin-bottom: 2rem;">
+                    <p>We would love to hear from you! Click below to save our number or chat with us on WhatsApp for orders and inquiries.</p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center; max-width: 350px; margin: 0 auto;">
+                    <a href="tel:+923368153781" class="glow-on-hover checkout-submit" style="display: flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; padding: 1rem; font-size: 1.2rem;">
+                        📞 Call Us (+92 336 8153781)
+                    </a>
+                    <a href="https://wa.me/923368153781" target="_blank" class="glow-on-hover checkout-submit" style="display: flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; padding: 1rem; font-size: 1.2rem; background: linear-gradient(45deg, #128C7E, #25D366);">
+                        💬 WhatsApp Us (+92 336 8153781)
+                    </a>
                 </div>
             </section>
         </div>
@@ -148,25 +173,22 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Delivery Area</label>
-                    <select required id="delivery-area" class="futuristic-select dark-select">
-                        <option value="250">Kareeb (Near) - Rs 250</option>
-                        <option value="350">Dur (Far) - Rs 350</option>
-                    </select>
+                    <label>Delivery Method</label>
+                    <p style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.5rem; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                        Delivery via <strong>Bykea, TCS, or Leopards</strong>. 
+                        Delivery charges are <strong>NOT included</strong> in your total below. 
+                        <span style="color: #38bdf8;">You will pay the delivery charges directly to the delivery rider/courier upon receiving the parcel.</span>
+                    </p>
                 </div>
 
                 <div class="checkout-summary">
                     <div class="summary-line">
-                        <span>Subtotal:</span>
+                        <span>Items Subtotal:</span>
                         <span id="checkout-subtotal">Rs 0</span>
                     </div>
-                    <div class="summary-line">
-                        <span>Delivery Charges:</span>
-                        <span id="delivery-cost">Rs 250</span>
-                    </div>
                     <div class="summary-line final-total">
-                        <span>Total Amount:</span>
-                        <span id="checkout-total">Rs 250</span>
+                        <span>Total (Excluding Delivery):</span>
+                        <span id="checkout-total">Rs 0</span>
                     </div>
                 </div>
                 <button type="submit" class="glow-on-hover checkout-submit">Confirm Order & Pay</button>
@@ -229,7 +251,7 @@
                 <button id="close-chat-window" class="close-btn">✖</button>
             </div>
             <div id="chat-messages" class="chat-messages">
-                <div class="ai-message">Hello! I am your futuristic AI shopping assistant. How can I help you today?</div>
+                <div class="ai-message">Hello! I am the Mehran AI Assistant. How can I help you with your shopping today?</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" id="chat-user-input" placeholder="Type your message..." autocomplete="off">
@@ -242,6 +264,12 @@
             <span class="btn-text">Ask AI</span>
         </button>
     </div>
+
+    <!-- WhatsApp Floating Bubble -->
+    <a href="https://wa.me/923368153781" target="_blank" class="whatsapp-bubble">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.825.733 5.48 2.016 7.791L0 32l8.423-2.21A15.932 15.932 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.607 0-5.06-.667-7.2-1.835l-.517-.283-5.353 1.403 1.43-5.215-.31-.527A13.256 13.256 0 012.667 16c0-7.353 5.98-13.333 13.333-13.333S29.333 8.647 29.333 16 23.353 29.333 16 29.333zM23.323 19.3c-.4-.2-2.37-1.17-2.737-1.303-.367-.133-.633-.2-.9.2-.267.4-.733.933-.9 1.133s-.333.267-.733.067c-.4-.2-1.69-.623-3.22-1.99-1.19-1.06-1.993-2.37-2.227-2.77-.233-.4-.025-.615.175-.813.18-.177.4-.467.6-.7.2-.233.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.967-.325-.778-.655-.673-.9-.685l-.767-.015c-.267 0-.7.1-.1.467 1.033.4 1.167 1.333.567 2.267.667 3.3 2.64 6.13 5.513 7.387.683.3 1.217.477 1.633.61.687.217 1.31.187 1.803.113.55-.083 1.693-.693 1.927-1.363.233-.67.233-1.243.167-1.363-.067-.12-.267-.2-.667-.4z" fill="#fff"/></svg>
+        <span class="tooltip">Chat with us!</span>
+    </a>
 
     <!-- Loading External Scripts -->
     <script type="module" src="firebase-client.js"></script>

@@ -277,8 +277,15 @@ header {
 .category-filters {
     display: flex;
     gap: 0.8rem;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    scrollbar-width: none; /* Firefox */
+}
+.category-filters::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }
 .filter-btn {
+    white-space: nowrap;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
     color: white;
@@ -303,7 +310,7 @@ header {
     font-size: 1.5rem;
 }
 
-/* Product Card - 3D Effect */
+/* 3D Tilt Effect Base */
 .product-card {
     border-radius: 16px;
     padding: 1.5rem;
@@ -311,34 +318,38 @@ header {
     flex-direction: column;
     gap: 1rem;
     position: relative;
-    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.1s ease-out, box-shadow 0.3s ease;
     transform-style: preserve-3d;
     cursor: pointer;
     background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01));
     border: 1px solid rgba(255, 255, 255, 0.1);
-    will-change: transform, box-shadow;
-    content-visibility: auto; /* Huge boost in scrolling performance */
-    contain-intrinsic-size: 400px; /* Suggest browser initial height */
+    will-change: transform;
 }
-.product-card::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: -1px; right: -1px; bottom: -1px;
-    border-radius: 16px;
-    background: linear-gradient(45deg, #ff00ea, #00d0ff, #ff00ea);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.4s;
-    pointer-events: none;
+
+/* Skeleton Loading (Shimmer) */
+.skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
 }
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Advanced Hover State */
 .product-card:hover {
-    transform: translateY(-10px) rotateX(10deg) rotateY(-5deg);
-    box-shadow: 20px 20px 40px rgba(0,0,0,0.4), -5px -5px 20px rgba(0,255,255,0.2), 5px 5px 20px rgba(255,0,234,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(56, 189, 248, 0.2);
 }
-.product-card:hover::before {
-    opacity: 0.5;
-    animation: hologlow 2s linear infinite;
+
+.product-card > * {
+    transform: translateZ(20px); /* Lifts content off the card in 3D */
 }
+
+.image-frame {
+    transform: translateZ(40px); /* Lifts image even higher */
+}
+
 @keyframes hologlow {
     0% { filter: hue-rotate(0deg); }
     100% { filter: hue-rotate(360deg); }
@@ -470,10 +481,12 @@ header {
     align-items: center;
     z-index: 1000;
     opacity: 1;
-    transition: 0.3s;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s;
+    visibility: visible;
 }
 .cart-modal.hidden, .checkout-modal.hidden {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
 }
 .cart-content, .checkout-content {
@@ -599,10 +612,25 @@ body {
     box-shadow: none !important;
 }
 
-/* Smooth scroll */
+/* Smooth scroll and Custom Scrollbar */
 html {
     scroll-behavior: smooth;
     height: auto !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a; 
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.5); 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.9); 
 }
 
 /* Image View Modal */
@@ -616,10 +644,12 @@ html {
     align-items: center;
     z-index: 2000;
     opacity: 1;
-    transition: 0.3s;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.4s;
+    visibility: visible;
 }
 .image-modal.hidden {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
 }
 .image-modal-content {
@@ -1020,3 +1050,150 @@ html {
     line-height: 1.6;
 }
 
+/* WhatsApp Floating Bubble */
+.whatsapp-bubble {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 5000;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #25D366, #128C7E);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+}
+.whatsapp-bubble:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6);
+}
+.whatsapp-bubble i || .whatsapp-bubble svg {
+    width: 35px;
+    height: 35px;
+    fill: white;
+}
+.whatsapp-bubble .tooltip {
+    position: absolute;
+    left: 75px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+.whatsapp-bubble:hover .tooltip {
+    opacity: 1;
+}
+
+/* Floating Sticky Cart for Mobile */
+@media screen and (max-width: 768px) {
+    #cart-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 4999;
+        border-radius: 50px;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+    }
+    .ai-chat-container {
+        bottom: 7.5rem; /* Move AI up so it doesn't overlap with cart */
+    }
+}
+
+/* Enhanced Reviews Grid */
+.reviews-grid {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+.reviews-grid::-webkit-scrollbar { display: none; }
+
+.review-card {
+    min-width: 300px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 16px;
+    scroll-snap-align: start;
+    transition: 0.3s;
+}
+.review-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: #38bdf8;
+}
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.reviewer-name {
+    font-weight: 600;
+    color: #38bdf8;
+}
+.review-rating {
+    color: #fbbf24;
+}
+
+/* Categories Bar Glow */
+.filter-btn.active {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+/* Success Animation */
+@keyframes successBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+.success-icon {
+    animation: successBounce 0.5s ease;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+/* Custom Glowing Cursor */
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    background: rgba(56, 189, 248, 0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease, background 0.3s ease;
+    mix-blend-mode: screen;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.8);
+    transform: translate(-50%, -50%);
+}
+.custom-cursor.click {
+    transform: translate(-50%, -50%) scale(2.5);
+    background: rgba(192, 132, 252, 0.8);
+}
+
+/* Hide default cursor on desktop */
+@media screen and (min-width: 1025px) {
+    body, a, button, select, input, textarea { cursor: none; }
+}
+
+/* Scroll Progress Bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(to right, #38bdf8, #c084fc);
+    z-index: 10001;
+    width: 0%;
+}
